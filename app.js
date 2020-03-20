@@ -10,19 +10,34 @@ const render = require("./lib/htmlRenderer");
 
 const theTeam = [];
 
-const employeeType = [
-    {
-        type: 'list',
-        name: 'employee',
-        message: 'Select a type of Employee',
-        default: 'intern',
+function runSearch() {
+    inquirer
+      .prompt({
+        name: "employee",
+        type: "list",
+        message: "Select an Employee?",
         choices: [
-            'intern',
-            'engineer',
-            'manager'
+          'Manager',
+          'Engineer',
+          'Intern'
         ]
-    }
-]
+      })
+      .then(function(answer) {
+        switch (answer.employee) {
+        case "Manager":
+          managerPrompt();
+          break;
+  
+        case "Engineer":
+          engineerPrompt();
+          break;
+  
+        case "Intern":
+          internPrompt();
+          break;
+        }
+      });
+  }
 
 const internQ = [
     {
@@ -111,14 +126,14 @@ const continueQ = [
 const continuePrompt = () => {
     inquirer.prompt(continueQ).then(function(data) {
         if (data.continue === 'yes') {
-            getInfo()
+            runSearch();
         } else {
             writeFile(theTeam);
         }
     })
 }
 
-const interPrompt = () => {
+const internPrompt = () => {
     inquirer.prompt(internQ).then(function(data) {
         let intern = new Intern(data.name, data.email, data.id, data.school);
         theTeam.push(intern);
@@ -142,20 +157,8 @@ const managerPrompt = () => {
     })
 }
 
-const getInfo = () => {
-    inquirer.prompt(employeeType).then(function(data) {
-        if (data.employeeType === 'intern') {
-            interPrompt();
-        } else if (data.employeeType === 'engineer') {
-            engineerPrompt();
-        } else if (data.employeeType === 'manager') {
-            managerPrompt();
-        }
-    })
-}
-
 const writeFile = (data) => {
-    fs.writeFile('./output/team.html', render(data), (error) => {
+    fs.writeFile(outputPath, render(data), (error) => {
         if (error) {
             throw error;
         }
@@ -163,6 +166,6 @@ const writeFile = (data) => {
     })
 }
 
-getInfo();
+runSearch();
 
 
