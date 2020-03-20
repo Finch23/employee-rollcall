@@ -1,5 +1,5 @@
 <h1> Employee Rollcall</h1>
-## By Nicholas Finch
+By Nicholas Finch
 <hr>
 
 <img src='Capture.PNG'>
