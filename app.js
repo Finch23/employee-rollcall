@@ -158,10 +158,8 @@ const managerPrompt = () => {
 }
 
 const writeFile = (data) => {
-    fs.writeFile(outputPath, render(data), (error) => {
-        if (error) {
-            throw error;
-        }
+    fs.writeFile('./output/team.html', render(data), (error) => {
+        if (error) throw error;
         console.log('Page created!!');
     })
 }
